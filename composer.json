@@ -1,0 +1,10 @@
+{
+    "require": {
+        "sonata-project/google-authenticator": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
