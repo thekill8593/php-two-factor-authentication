@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Purocodigo</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,13 +11,24 @@
         <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
       </li>      
     </ul>
+
+    
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="register.php">Registrarme <span class="sr-only"></span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Iniciar sesion <span class="sr-only"></span></a>
-      </li>      
+      <?php if ($userController->isUserLoggedIn()): ?>
+        <li class="nav-item active">
+          <a class="nav-link" href="panel.php"><?= $_SESSION['email'] ?> <span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="api/logout.php">Cerrar sesion<span class="sr-only"></span></a>
+        </li>
+      <?php else: ?>
+        <li class="nav-item active">
+          <a class="nav-link" href="register.php">Registrarme <span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="login.php">Iniciar sesion <span class="sr-only"></span></a>
+        </li>   
+      <?php endif; ?>   
     </ul>    
   </div>
 </nav>

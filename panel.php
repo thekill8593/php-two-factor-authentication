@@ -1,6 +1,10 @@
 <?php
 
   include './templates/header.php';
+  
+  if (!$userController->isUserLoggedIn()) {
+    header('Location: login.php');
+  }
 
 ?>
 
@@ -18,7 +22,7 @@
     <?php include './templates/nav.php' ?>
 
     <div class="container mt-5">        
-        <h3>Pagina de inicio</h3><hr />
+        <h3>Panel de usuario</h3><hr />
     </div>
     
 </body>

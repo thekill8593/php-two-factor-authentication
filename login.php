@@ -1,4 +1,5 @@
 <?php
+
   include './templates/header.php';  
 
   if ($userController->isUserLoggedIn()) {
@@ -23,12 +24,8 @@
     <div class="container mt-5">
         <div class="row justify-content-md-center">
             <div class="col col-md-6">
-                <h3>Nueva cuenta</h3><hr />
-                <form id="register-form">
-                    <div class="form-group">
-                        <label for="name">Nombre</label>
-                        <input type="text" class="form-control" id="name">            
-                    </div>
+                <h3>Iniciar sesion</h3><hr />
+                <form id="login-form">                   
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email">            
@@ -37,7 +34,7 @@
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password">
                     </div>      
-                    <button type="submit" class="btn btn-primary">Crear cuenta</button>
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
                 </form>
                 <div class="alert alert-danger mt-4 d-none" id="error-message"></div>
             </div>
@@ -46,22 +43,21 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
     <script>
-        document.getElementById('register-form').onsubmit = (e) => {
+        document.getElementById('login-form').onsubmit = (e) => {
             e.preventDefault();
 
             const errorMessage = document.getElementById('error-message');
-            errorMessage.classList.add('d-none');
-            const name = document.getElementById('name').value;
+            errorMessage.classList.add('d-none');            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            if (!email || !name || !password) {
+            if (!email || !password) {
                 return;
             }
 
-            axios.post('api/register.php', { email: email, name: name, password: password })
+            axios.post('api/login.php', { email: email, password: password })
                 .then(res => {
-                    window.location = 'panel.php';                    
+                    window.location = 'panel.php';
                 })
                 .catch(err => {
                     errorMessage.innerText = err.response.data;
