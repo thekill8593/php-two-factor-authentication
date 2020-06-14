@@ -1,1 +1,1 @@
-##Código doble factor de autenticación PHP y Google authenticator
+## Código doble factor de autenticación PHP y Google authenticator
