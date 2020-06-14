@@ -23,4 +23,16 @@ class User extends Database {
         return $result->fetch_assoc();
     }
 
+    public function createSecret($secret, $id) {
+        $query = $this->db->prepare("UPDATE users SET two_factor_key = ? WHERE id = ?");        
+        $query->bind_param('si', $secret, $id);
+        $query->execute();
+    }
+
+    public function deleteSecret($id) {
+        $query = $this->db->prepare("UPDATE users SET two_factor_key = null WHERE id = ?");        
+        $query->bind_param('i', $id);
+        $query->execute();
+    }
+
 }

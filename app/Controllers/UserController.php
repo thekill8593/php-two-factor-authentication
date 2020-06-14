@@ -22,11 +22,14 @@ class UserController {
             return ['result' => false];
         }
 
-        //segundo factor
+        if ($user['two_factor_key'] !== null) {
+            $this->createSession(null, $user['email'], false);
+            return ['result' => true, 'secondfactor' => true];
+        }
 
-        $this->createSession($user['id'], $user['email']);
+        $this->createSession($user['id'], $user['email']);        
 
-        return ['result' => true];
+        return ['result' => true, 'secondfactor' => false];
 
     }
 
@@ -49,6 +52,43 @@ class UserController {
         }catch (\Exception $ex) {
 
         }
+    }
+
+    public function getUser() {
+        $email = $_SESSION['email'];
+        return (new User())->getUser($email);
+    }   
+
+    public function activateSecondFactor($secret, $code) {
+        if ($this->checkGoogleAuthenticatorCode($secret, $code)) {
+            $id = $_SESSION['userId'];
+            (new User())->createSecret($secret, $id);
+            return true;
+        }
+        return false;
+    }
+
+    public function deactivateSecondFactor() {
+        $id = $_SESSION['userId'];
+        (new User())->deleteSecret($id);
+    }
+
+    public function checkGoogleAuthenticatorCode($secret, $code) {
+        $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
+        if ($g->checkCode($secret, $code)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function validateCode($code) {
+        $user = $this->getUser();
+        if ($this->checkGoogleAuthenticatorCode($user['two_factor_key'], $code)) {
+            $this->createSession($user['id'], $user['email']);
+            return true;
+        }
+
+        return false;
     }
     
 }

@@ -16,11 +16,14 @@
     <ul class="navbar-nav ml-auto">
       <?php if ($userController->isUserLoggedIn()): ?>
         <li class="nav-item active">
+          <a class="nav-link" href="panel-secondfactor.php">Segundo factor<span class="sr-only"></span></a>
+        </li> 
+        <li class="nav-item active">
           <a class="nav-link" href="panel.php"><?= $_SESSION['email'] ?> <span class="sr-only"></span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="api/logout.php">Cerrar sesion<span class="sr-only"></span></a>
-        </li>
+        </li>              
       <?php else: ?>
         <li class="nav-item active">
           <a class="nav-link" href="register.php">Registrarme <span class="sr-only"></span></a>

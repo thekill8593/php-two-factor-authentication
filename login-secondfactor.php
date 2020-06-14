@@ -6,8 +6,8 @@
     header('Location: panel.php');
   }
 
-  if(isset($_SESSION['isLoggedIn']) && !$_SESSION['isLoggedIn']) {
-      $userController->logout();
+  if (!(isset($_SESSION['isLoggedIn']) && isset($_SESSION['email']))) {
+    header('Location: login.php');
   }
 
 ?>
@@ -28,16 +28,12 @@
     <div class="container mt-5">
         <div class="row justify-content-md-center">
             <div class="col col-md-6">
-                <h3>Iniciar sesion</h3><hr />
-                <form id="login-form">                   
+                <h3>Segundo factor de autenticacion</h3><hr />
+                <form id="second-factor-form">                   
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email">            
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password">
-                    </div>      
+                        <label for="code">Codigo</label>
+                        <input type="text" class="form-control" id="code">            
+                    </div>                    
                     <button type="submit" class="btn btn-primary">Ingresar</button>
                 </form>
                 <div class="alert alert-danger mt-4 d-none" id="error-message"></div>
@@ -47,25 +43,20 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
     <script>
-        document.getElementById('login-form').onsubmit = (e) => {
+        document.getElementById('second-factor-form').onsubmit = (e) => {
             e.preventDefault();
 
             const errorMessage = document.getElementById('error-message');
             errorMessage.classList.add('d-none');            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (!email || !password) {
+            const code = document.getElementById('code').value;
+            
+            if (!code) {
                 return;
             }
 
-            axios.post('api/login.php', { email: email, password: password })
-                .then(res => {
-                    if (res.data.secondfactor) {
-                        window.location = 'login-secondfactor.php';
-                    } else {
-                        window.location = 'panel.php';
-                    }
+            axios.post('api/loginsecondfactor.php', { code: code })
+                .then(res => {                   
+                    window.location = 'panel.php';
                 })
                 .catch(err => {
                     errorMessage.innerText = err.response.data;
